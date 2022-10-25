@@ -7,6 +7,13 @@
 
 let getDomain = require('..');
 
+// More difficult tests
+test('localhost', async () => {
+	let query = 'http://localhost:4300/test?c=our-clientsogle.com ';
+	let resp = await getDomain(query);
+	expect(resp.domain).toBe('localhost');
+});
+
 test('test google.com', async () => {
 	let query = 'https://www.google.com/search?q=node+difference+between';
 	let resp = await getDomain(query);
