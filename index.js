@@ -116,37 +116,45 @@ async function parse_domains(query) {
 		let suffix,
 			suffixArr = [];
 
-		let tld = null;
+		let tld = '',
+			siteName = '',
+			domain = '',
+			subdomain = '';
 
-		while (arr.length > 0) {
-			suffixArr.unshift(arr.pop());
-			suffix = suffixArr.join('.');
+		if (arr.length === 1) {
+			// handle cases like localhost
+			domain = urlObj.hostname;
+		} else {
+			while (arr.length > 0) {
+				suffixArr.unshift(arr.pop());
+				suffix = suffixArr.join('.');
 
-			if (suffixObj[suffix] !== undefined) {
-				tld = suffix;
+				if (suffixObj[suffix] !== undefined) {
+					tld = suffix;
+				}
 			}
+
+			if (!tld) {
+				tld = urlObj.hostname.split('.').pop();
+			}
+
+			let hostnameWithoutTld = urlObj.hostname
+				.replace(tld, '')
+				.replace(/\.$/, '');
+
+			// pick site name
+			siteName = hostnameWithoutTld.split(/[\.\/]/).pop();
+
+			// now compose domain
+			domain = siteName + '.' + tld;
+
+			// any subdomains
+			subdomain = urlObj.hostname
+				.replace(domain, '')
+				.split('.')
+				.filter((s) => s.length > 0)
+				.join('.');
 		}
-
-		if (!tld) {
-			tld = urlObj.hostname.split('.').pop();
-		}
-
-		let hostnameWithoutTld = urlObj.hostname
-			.replace(tld, '')
-			.replace(/\.$/, '');
-
-		// pick site name
-		let siteName = hostnameWithoutTld.split(/[\.\/]/).pop();
-
-		// now compose domain
-		let domain = siteName + '.' + tld;
-
-		// any subdomains
-		let subdomain = urlObj.hostname
-			.replace(domain, '')
-			.split('.')
-			.filter((s) => s.length > 0)
-			.join('.');
 
 		return {
 			tld,
@@ -158,7 +166,6 @@ async function parse_domains(query) {
 			protocol: urlObj.protocol,
 		};
 
-		// console.log(suffixes);
 	} catch (error) {
 		throw error;
 	}
