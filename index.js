@@ -91,7 +91,7 @@ async function get_suffixes() {
  *  Takes in a query in the form of a URL, domain name and so on
  *
  * @param {*} query
- * @return {*} 
+ * @return {*}
  */
 async function parse_domains(query) {
 	try {
@@ -141,16 +141,18 @@ async function parse_domains(query) {
 		// now compose domain
 		let domain = siteName + '.' + tld;
 
-        // any subdomains
-        let subdomain = urlObj.hostname.replace(domain,'').split('.').filter(s=>s.length>0).join('.');
-
-		
+		// any subdomains
+		let subdomain = urlObj.hostname
+			.replace(domain, '')
+			.split('.')
+			.filter((s) => s.length > 0)
+			.join('.');
 
 		return {
-            tld,
+			tld,
 			domain,
-            subdomain,
-            domainWithoutSuffix:siteName,
+			subdomain,
+			siteName,
 			href: urlObj.href,
 			hostname: urlObj.hostname,
 			protocol: urlObj.protocol,
