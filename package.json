@@ -1,6 +1,6 @@
 {
   "name": "parse-domains",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Domain parser that automatically updates its suffix lists from Mozilla's publicsuffix.org",
   "main": "index.js",
   "scripts": {
