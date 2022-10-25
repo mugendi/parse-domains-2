@@ -24,12 +24,17 @@ Generally, parsing most domains takes less than one millisecond. While not as fa
 ## Usage
 
 ```javascript
-let parse = require('parse-domains');
-let resp = parse("http://www.google.co.uk");
-console.log(resp);
+async () => {
+	let parse = require('parse-domains');
+  // notice this method returns a promise
+  // So either use the async/await pattern or the Promise.then pattern
+	let resp = await parse('http://www.google.co.uk');
+	console.log(resp);
+};
 ```
 
 This will log:
+
 ```
 {
   tld: 'co.uk',
