@@ -97,6 +97,10 @@ async function parse_domains(query) {
 	try {
 		let { data: suffixObj } = await get_suffixes();
 
+		if (typeof query !== 'string') {
+			throw new Error("You can only parse 'string' URLS");
+		}
+
 		// in order to parse with new URL, we must ensure our query is a valid url
 		// 1. trim
 		query = query.trim();
@@ -165,7 +169,6 @@ async function parse_domains(query) {
 			hostname: urlObj.hostname,
 			protocol: urlObj.protocol,
 		};
-
 	} catch (error) {
 		throw error;
 	}
